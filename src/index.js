@@ -14,9 +14,24 @@ const gifsArray = (state = [], action) => {
     return state;
 }
 
+function* searchResult(action) {
+    try {
+    const userInput = action.payload
+    const response = yield axios({
+        method: 'POST',
+        url: '/api/search',
+        data: {userInput}
+    })
+    console.log(response.data.data)
+
+    } catch (error) {
+        console.log('POST search fail', error)
+    }
+}
+
 //root generator
 function* rootSaga() {
-
+    yield takeEvery('SAGA/GET_GIF', searchResult)
 }
 
 //declare sagaMiddleware
