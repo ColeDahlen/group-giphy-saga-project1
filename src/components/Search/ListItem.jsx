@@ -1,9 +1,37 @@
-
+import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import './ListItem.css'
 
 function ListItem() {
-    return(
+
+    const dispatch = useDispatch();
+
+    
+
+    //piece of state to add to the favorites table? idk if this will work
+    const [favorite, setFavorite] = useState(false)
+
+    //const import 
+
+    const addToFavorites = () => {
+        dispatch({
+            type: 'SAGA/ADD_FAVORITES',
+            //need payload
+            
+        })
+        setFavorite = true;
+    }
+
+    return (
         <>
-        <h1> you got a gif </h1>
+            <section className="card">
+                <section className="img">
+                    {/* still need to give image a source */}
+                    <img/>
+                </section>
+
+                <button onClick={addToFavorites}>favorite</button>
+            </section>
         </>
     )
 }

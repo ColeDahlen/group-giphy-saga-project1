@@ -14,10 +14,30 @@ const gifsArray = (state = [], action) => {
     return state;
 }
 
+//post request
+//wee need to access action.payload so we have to the function 'action' as a parameter
+function* addToFavorites(action) {
+    //declare action.payload as a const so we we know what we're sending to the server
+    const newFavorite = action.payload;
+    //console.log newFavorite to to see if we're recieving the right thing from ListItem.jsx
+    console.log(newFavorite)
+    const response = yield axios({
+        method: 'POST',
+        url: `/api/favorite`,
+        data: {newFavorite}
+    })
+    //call saga get function usng something like :
+    yield put({
+        //type: 'SAGA/GET_PICTURES' or whatever action.type they gave the get function
+    })
+}
+
+
 //root generator
 function* rootSaga() {
-
+    yield takeEvery('SAGA/ADD_FAVORITES', addToFavorites)
 }
+
 
 //declare sagaMiddleware
 const sagaMiddleware = createSagaMiddleware();
