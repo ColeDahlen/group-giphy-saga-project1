@@ -75,11 +75,11 @@ function* addToFavorites(action) {
     })
 }
 function* deleteFavorite(action){
-    const urlToDelete = action.payload;
-    console.log(urlToDelete)
+    const idToDelete = action.payload;
+    console.log(idToDelete)
     const response = yield axios({
         method: 'DELETE',
-        url:`/api/favorite/${urlToDelete}`,
+        url:`/api/favorite/${idToDelete}`,
     })
     yield put({
         type: 'SAGA/GET_FAVORITES'

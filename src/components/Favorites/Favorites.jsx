@@ -6,12 +6,6 @@ function Favorites() {
     // useEffect(() => {
     
     //   }, []);
-    const deleteFavorite = () =>{
-        dispatch({
-            type: 'SAGA/DELETE_FAVORITE',
-            payload: gif.images.fixed_height.url
-        })
-    }
      
     return (
         <>
