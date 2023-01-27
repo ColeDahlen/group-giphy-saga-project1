@@ -74,13 +74,24 @@ function* addToFavorites(action) {
         type: 'SAGA/GET_FAVORITES'
     })
 }
-
+function* deleteFavorite(action){
+    const urlToDelete = action.payload;
+    console.log(urlToDelete)
+    const response = yield axios({
+        method: 'DELETE',
+        url:`/api/favorite/${urlToDelete}`,
+    })
+    yield put({
+        type: 'SAGA/GET_FAVORITES'
+    })
+}
 
 //root generator
 function* rootSaga() {
     yield takeEvery ('SAGA/GET_FAVORITES', getFavorites);
     yield takeEvery('SAGA/ADD_FAVORITES', addToFavorites);
     yield takeEvery('SAGA/GET_GIF', searchResult);
+    yield takeEvery('SAGA/DELETE_FAVORITE', deleteFavorite)
 }
 
 
