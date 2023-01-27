@@ -14,8 +14,30 @@ const gifsArray = (state = [], action) => {
     return state;
 }
 
+//reducer to hold favorites table from DB
+const favorites = (state = [], action) => {
+    switch (action.type) {
+        case 'SET_FAVORITE':
+            return action.payload;
+        default: 
+            return state;
+    }
+}
+
+//get request to update favorites page
+function* getFavorites() {
+    const response = yield axios ({
+        method: 'GET',
+        url: `/api/favorite`
+    })
+    yield put({
+        type: 'SET_FAVORITE',
+        payload: response.data
+    })
+}
+
 //post request
-//wee need to access action.payload so we have to the function 'action' as a parameter
+//we need to access action.payload so we have to the function 'action' as a parameter
 function* addToFavorites(action) {
     //declare action.payload as a const so we we know what we're sending to the server
     const newFavorite = action.payload;
@@ -28,14 +50,16 @@ function* addToFavorites(action) {
     })
     //call saga get function usng something like :
     yield put({
-        //type: 'SAGA/GET_PICTURES' or whatever action.type they gave the get function
+        //update the favorites page
+        type: 'SAGA/GET_FAVORITES'
     })
 }
 
 
 //root generator
 function* rootSaga() {
-    yield takeEvery('SAGA/ADD_FAVORITES', addToFavorites)
+    yield takeEvery ('SAGA/GET_FAVORITES', getFavorites);
+    yield takeEvery('SAGA/ADD_FAVORITES', addToFavorites);
 }
 
 
@@ -45,7 +69,7 @@ const sagaMiddleware = createSagaMiddleware();
 //create store
 const store = createStore(
     combineReducers({ 
-
+        favorites,
      }),
     applyMiddleware(logger, sagaMiddleware)
   );

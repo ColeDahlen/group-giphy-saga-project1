@@ -11,7 +11,7 @@ function ListItem() {
     //piece of state to add to the favorites table? idk if this will work
     const [favorite, setFavorite] = useState(false)
 
-    //const import 
+    const favorites = useSelector(store => store.favorites);
 
     const addToFavorites = () => {
         dispatch({
@@ -19,18 +19,21 @@ function ListItem() {
             //need payload
             
         })
-        setFavorite = true;
+        setFavorite(true);
     }
 
     return (
         <>
             <section className="card">
-                <section className="img">
-                    {/* still need to give image a source */}
-                    <img/>
-                </section>
-
-                <button onClick={addToFavorites}>favorite</button>
+                <img />
+              {!favorite ?
+              <button onClick={addToFavorites}>favorite</button>
+              :
+              //this can eventually be a function that removes from favorites maybe?
+              //so it will be a delete function
+              <button>remove</button>
+              }
+                
             </section>
         </>
     )
