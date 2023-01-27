@@ -6,12 +6,8 @@ function ListItem({ gif }) {
 
     const dispatch = useDispatch();
 
-    
-
     //piece of state to add to the favorites table? idk if this will work
-    const [favorite, setFavorite] = useState(false)
-
-    const favorites = useSelector(store => store.favorites);
+    const [favorite, setFavorite] = useState(false);
 
     const addToFavorites = () => {
         dispatch({
@@ -21,13 +17,7 @@ function ListItem({ gif }) {
         })
         setFavorite(true);
     }
-    const deleteFavorite = () =>{
-        dispatch({
-            type: 'SAGA/DELETE_FAVORITE',
-            payload: gif.images.fixed_height.url
-        })
-    }
-
+   
     return (
         <>
             <section className="card">

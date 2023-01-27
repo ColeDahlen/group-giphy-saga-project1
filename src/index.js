@@ -27,6 +27,15 @@ const gifsArray = (state = [], action) => {
     return state;
 }
 
+const categories = (state = [], action) => {
+    switch (action.type) {
+        case 'SET_CATEGORY':
+            return action.payload;
+        default: 
+            return state;
+    }
+}
+
 function* searchResult(action) {
     try {
     const userInput = action.payload
@@ -86,12 +95,27 @@ function* deleteFavorite(action){
     })
 }
 
+//put request to change category
+function* addCategory(action) {
+    const idToUpdate = action.payload.id;
+    console.log(idToUpdate);
+    const response = yield axios ({
+        method: 'PUT', 
+        url: `/api/category/${idToUpdate}`,
+        data: {category: action.payload.category}
+    })
+    yield put({
+        type: 'SAGA/GET_FAVORITES'
+    })
+}
+
 //root generator
 function* rootSaga() {
     yield takeEvery ('SAGA/GET_FAVORITES', getFavorites);
     yield takeEvery('SAGA/ADD_FAVORITES', addToFavorites);
     yield takeEvery('SAGA/GET_GIF', searchResult);
-    yield takeEvery('SAGA/DELETE_FAVORITE', deleteFavorite)
+    yield takeEvery('SAGA/DELETE_FAVORITE', deleteFavorite);
+    yield takeEvery('SAGA/ADD_CATEGORY', addCategory)
 }
 
 
