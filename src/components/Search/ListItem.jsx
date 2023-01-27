@@ -37,7 +37,7 @@ function ListItem({ gif }) {
               :
               //this can eventually be a function that removes from favorites maybe?
               //so it will be a delete function
-              <button onClick={deleteFavorite}>remove</button>
+              <div></div>
               }
                 
             </section>
