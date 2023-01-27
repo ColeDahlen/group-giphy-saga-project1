@@ -6,7 +6,7 @@ const router = express.Router();
 // return all favorite images
 router.get('/', (req, res) => {
   const sqlQuery = `
-  SELECT "favorites"."url","favorites"."id", "category"."name" FROM "favorites"
+  SELECT "favorites"."url","favorites"."id", "category"."name", "favorites"."category_id" FROM "favorites"
   LEFT JOIN "category"
     ON "favorites"."category_id" = "category"."id"
   ORDER BY "favorites"."id";
