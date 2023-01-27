@@ -6,15 +6,14 @@ const router = express.Router();
 // return all favorite images
 router.get('/', (req, res) => {
   const sqlQuery = `
-    SELECT favorites.*, category.name FROM "favorites"
-      LEFT JOIN "category"
-        ON favorites.category_id = categore.id
-      ORDER BY id;
+  SELECT "favorites"."url","favorites"."id", "category"."name" FROM "favorites"
+  LEFT JOIN "category"
+    ON "favorites"."category_id" = "category"."id"
+  ORDER BY "favorites"."id";
   `;
   pool.query(sqlQuery)
   .then((dbRes) => {
     res.send(dbRes.rows);
-    res.sendStatus(200);
   })
   .catch((error) => {
     console.log('error in /api/favorite GET', error);
@@ -26,11 +25,12 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
   //console.log to see what we're getting from the client
   //image url should req.body.url
-  console.log('here is our req.body.url:', req.body.url);
-  const newFavorite = req.body.url;
+  // console.log('here is our req.body.newFavorite:', req.body.newFavorite);
+  const newFavorite = req.body.newFavorite;
   const sqlQuery = `
     INSERT INTO "favorites" (url)
-      VALUES = $1;
+      VALUES 
+      ($1);
   `;
   const sqlValue = [newFavorite];
   pool.query(sqlQuery, sqlValue)
@@ -51,7 +51,8 @@ router.put('/:favId', (req, res) => {
 });
 
 // delete a favorite
-router.delete('/', (req, res) => {
+router.delete('/:url', (req, res) => {
+  console.log('****************',req.params)
   res.sendStatus(200);
 });
 
