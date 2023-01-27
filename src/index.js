@@ -11,6 +11,9 @@ import createSagaMiddleware from 'redux-saga';
 import { takeEvery, put } from 'redux-saga/effects'
 
 const gifsArray = (state = [], action) => {
+    if (action.type === 'SET_GIF_ARRAY'){
+        return action.payload
+    }
     return state;
 }
 
@@ -18,14 +21,16 @@ function* searchResult(action) {
     try {
     const userInput = action.payload
     const response = yield axios({
-        method: 'POST',
-        url: '/api/search',
-        data: {userInput}
+        method: 'GET',
+        url: `/api/search/${userInput}`
     })
     console.log(response.data.data)
-
+    yield put({
+        type: 'SET_GIF_ARRAY',
+        payload: response.data.data
+    })
     } catch (error) {
-        console.log('POST search fail', error)
+        console.log('GET search fail', error)
     }
 }
 
@@ -40,8 +45,8 @@ const sagaMiddleware = createSagaMiddleware();
 //create store
 const store = createStore(
     combineReducers({ 
-
-     }),
+        gifsArray
+}),
     applyMiddleware(logger, sagaMiddleware)
   );
 

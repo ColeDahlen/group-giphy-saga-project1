@@ -6,7 +6,7 @@ import axios from 'axios';
 function Search () {
     const [searchInput, setSearchInput] = useState('')
     const dispatch = useDispatch();
-
+    const gifs = useSelector(store => store.gifsArray);
     function handleSubmit(event) {
         event.preventDefault();
         dispatch({
@@ -25,7 +25,11 @@ function Search () {
             />
             <button>Submit</button>
         </form>
-        <ListItem />
+        {
+            gifs.map((gif) => {
+                return <ListItem key={gif.id} gif={gif}/>
+            })
+        }
         </>
 
     )
