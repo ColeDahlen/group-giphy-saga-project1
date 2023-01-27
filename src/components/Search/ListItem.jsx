@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import './ListItem.css'
 
-function ListItem() {
+function ListItem({ gif }) {
 
     const dispatch = useDispatch();
 
@@ -25,7 +25,7 @@ function ListItem() {
     return (
         <>
             <section className="card">
-                <img />
+                <img src={gif.images.original.url} />
               {!favorite ?
               <button onClick={addToFavorites}>favorite</button>
               :

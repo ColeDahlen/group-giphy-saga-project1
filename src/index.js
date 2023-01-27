@@ -10,10 +10,6 @@ import axios from 'axios';
 import createSagaMiddleware from 'redux-saga';
 import { takeEvery, put } from 'redux-saga/effects'
 
-const gifsArray = (state = [], action) => {
-    return state;
-}
-
 //reducer to hold favorites table from DB
 const favorites = (state = [], action) => {
     switch (action.type) {
@@ -21,6 +17,30 @@ const favorites = (state = [], action) => {
             return action.payload;
         default: 
             return state;
+    }
+}
+
+const gifsArray = (state = [], action) => {
+    if (action.type === 'SET_GIF_ARRAY'){
+        return action.payload
+    }
+    return state;
+}
+
+function* searchResult(action) {
+    try {
+    const userInput = action.payload
+    const response = yield axios({
+        method: 'GET',
+        url: `/api/search/${userInput}`
+    })
+    console.log(response.data.data)
+    yield put({
+        type: 'SET_GIF_ARRAY',
+        payload: response.data.data
+    })
+    } catch (error) {
+        console.log('GET search fail', error)
     }
 }
 
@@ -60,6 +80,7 @@ function* addToFavorites(action) {
 function* rootSaga() {
     yield takeEvery ('SAGA/GET_FAVORITES', getFavorites);
     yield takeEvery('SAGA/ADD_FAVORITES', addToFavorites);
+    yield takeEvery('SAGA/GET_GIF', searchResult);
 }
 
 
@@ -69,7 +90,8 @@ const sagaMiddleware = createSagaMiddleware();
 //create store
 const store = createStore(
     combineReducers({ 
-        favorites,
+        gifsArray,
+        favorites
      }),
     applyMiddleware(logger, sagaMiddleware)
   );
